@@ -9,9 +9,17 @@ This project shows the sample of testing `Sitecore.Context.PageMode.IsPageEditor
 * Valid Sitecore License 
 
 
-### How do I get set up? ###
+# How do I get set up?
+
+Copy Sitecore Dlls into `.\Libs\Sitecore` folder:
+
+* Sitecore.Kernel.dll
+* Sitecore.nexus.dll
+* Lucene.Net.dll
+* Sitecore.Logging.dll
+
+Copy Sitecore license into repository root folder.
 
 
-
-### How to run ? ###
+# How to run ? 
 
