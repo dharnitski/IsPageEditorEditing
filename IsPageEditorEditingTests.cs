@@ -28,8 +28,32 @@ namespace IsPageEditorEditing
         }
 
         [Test]
-        public void ShouldReturnForEmptyKeyInPageEditor()
+        public void TestIsPageEditorEditing()
         {
+            var fakeSiteContext = new FakeSiteContext(
+                new StringDictionary
+                {
+                    {"enableWebEdit", "true"},
+                    {"masterDatabase", "master"},
+                });
+
+            using (new SiteContextSwitcher(fakeSiteContext))
+            {
+                //act
+                Context.Site.SetDisplayMode(DisplayMode.Edit, DisplayModeDuration.Remember);
+
+                //assert
+                Context.PageMode.IsPageEditorEditing.Should().BeTrue();
+
+                //Only works in Sitecore 8+
+                Context.PageMode.IsExperienceEditorEditing.Should().BeTrue();
+            }
+        }
+
+        [Test]
+        public void TestIsPageEditorEditingWithExtraAssertions()
+        {
+            //Assert site configuration defined in app.config
             Factory.GetSite("shell").Should().NotBeNull();
             Factory.GetSite("shell").Domain.Name.Should().NotBeNullOrWhiteSpace();
 
@@ -50,9 +74,6 @@ namespace IsPageEditorEditing
                 Context.Site.EnableWebEdit.Should().BeTrue();
                 Context.Site.Database.Name.Should().Be("web");
                 Context.Site.MasterDatabase.Name.Should().Be("master");
-                Factory.GetSite("shell").Should().NotBeNull();
-                SiteManager.GetSite("shell").Should().NotBeNull();
-                SiteManager.CanEnter("shell", Context.User).Should().BeTrue();
                 Settings.CommerceServer.StandaloneEdition.Should().BeFalse();
                 Settings.WebEdit.Enabled.Should().BeTrue();
 
