@@ -53,9 +53,20 @@ namespace IsPageEditorEditing
         [Test]
         public void TestIsPageEditorEditingWithExtraAssertions()
         {
+            //this does not work for SiteManager.GetSite("shell")
+            //var shellAttributes = new StringDictionary
+            //    {
+            //        {"name", "shell"},
+            //        {"domain", "sitecore"}
+            //    };
+
+            //var shell = new FakeSiteContext(shellAttributes);
+            //SiteContextFactory.Sites.Add(shell.SiteInfo);
+
             //Assert site configuration defined in app.config
             Factory.GetSite("shell").Should().NotBeNull();
             Factory.GetSite("shell").Domain.Name.Should().NotBeNullOrWhiteSpace();
+            SiteManager.GetSite("shell").Should().NotBeNull();
 
             var fakeSiteContext = new FakeSiteContext(
                 new StringDictionary
@@ -69,6 +80,8 @@ namespace IsPageEditorEditing
 
             using (new SiteContextSwitcher(fakeSiteContext))
             {
+                SiteManager.CanEnter("shell", Context.User).Should().BeTrue();
+
                 //check prerequisites
                 Context.Site.Name.Should().Be("mywebsite");
                 Context.Site.EnableWebEdit.Should().BeTrue();
